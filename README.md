@@ -6,9 +6,12 @@
 [![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-6366f1?style=for-the-badge&logo=github&logoColor=white)](https://ganeshkumarkomarneni-2005.github.io/real-estate-sql-project/)
+[![Detailed Report](https://img.shields.io/badge/Detailed%20Report-PROJECT__REPORT.md-10b981?style=for-the-badge&logo=markdown&logoColor=white)](PROJECT_REPORT.md)
+[![Presentation Deck](https://img.shields.io/badge/Presentation-PowerPoint%20PPTX-f59e0b?style=for-the-badge&logo=microsoft-powerpoint&logoColor=white)](Real_Estate_Market_Analysis_Presentation.pptx)
 
 > 🌐 **Live Interactive Dashboard**: **[https://ganeshkumarkomarneni-2005.github.io/real-estate-sql-project/](https://ganeshkumarkomarneni-2005.github.io/real-estate-sql-project/)**  
-> *Explore interactive KPI metrics, Chart.js visualizations, and executive market performance tables in real time.*
+> 📄 **Comprehensive Written Report**: **[`PROJECT_REPORT.md`](PROJECT_REPORT.md)**  
+> 📽️ **Executive PowerPoint Deck**: **[`Real_Estate_Market_Analysis_Presentation.pptx`](Real_Estate_Market_Analysis_Presentation.pptx)** (15 Widescreen Slides)
 
 ---
 
@@ -454,7 +457,10 @@ real-estate-sql-project/
 │       ├── chart_data_quality_issues.png
 │       ├── chart_properties_by_city.png
 │       └── chart_property_types_donut.png
-└── README.md                                  # Comprehensive project documentation
+├── Real_Estate_Market_Analysis_Presentation.pptx # 15-Slide Executive PowerPoint Deck
+├── PROJECT_REPORT.md                          # Comprehensive written project and technical report
+├── generate_pptx.py                           # Python automation script to generate PPTX deck
+├── README.md                                  # Comprehensive project documentation
 ```
 
 ### 🚀 Step-by-Step Execution Guide
