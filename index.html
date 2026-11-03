@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Real Estate Market Analytics – Project 14</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  :root{
+    --bg:#0f1117;--card:#1a1d27;--card2:#20253a;--accent:#6366f1;
+    --accent2:#8b5cf6;--accent3:#06b6d4;--green:#10b981;--amber:#f59e0b;
+    --red:#ef4444;--text:#e2e8f0;--muted:#94a3b8;--border:#2d3748;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  /* ── HEADER ── */
+  .header{
+    background:linear-gradient(135deg,#1e1b4b 0%,#312e81 40%,#1e3a5f 100%);
+    padding:48px 40px 40px;position:relative;overflow:hidden;
+  }
+  .header::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 70% 50%,rgba(99,102,241,.25) 0%,transparent 60%);
+  }
+  .header-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(99,102,241,.2);border:1px solid rgba(99,102,241,.4);
+    border-radius:50px;padding:6px 16px;font-size:12px;font-weight:600;
+    color:#a5b4fc;letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px;
+  }
+  .header h1{font-size:clamp(24px,4vw,42px);font-weight:800;
+    background:linear-gradient(135deg,#e0e7ff,#a5b4fc,#67e8f9);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;line-height:1.2;position:relative;}
+  .header p{color:#94a3b8;margin-top:10px;font-size:15px;position:relative;}
+  /* ── KPI STRIP ── */
+  .kpi-strip{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:16px;padding:28px 40px;
+  }
+  .kpi{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:20px;position:relative;overflow:hidden;transition:transform .2s;
+  }
+  .kpi:hover{transform:translateY(-3px);}
+  .kpi::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:var(--kpi-color,var(--accent));border-radius:3px 3px 0 0;
+  }
+  .kpi-label{font-size:11px;font-weight:600;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+  .kpi-value{font-size:26px;font-weight:800;color:var(--text);}
+  .kpi-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+  /* ── SECTION ── */
+  .section-title{
+    font-size:11px;font-weight:700;letter-spacing:1.2px;
+    text-transform:uppercase;color:var(--accent);
+    padding:8px 40px;margin-top:8px;
+  }
+  .grid{display:grid;gap:20px;padding:0 40px 24px;}
+  .grid-2{grid-template-columns:repeat(auto-fit,minmax(480px,1fr));}
+  .grid-3{grid-template-columns:repeat(auto-fit,minmax(320px,1fr));}
+  .grid-1{grid-template-columns:1fr;}
+  /* ── CHART CARD ── */
+  .chart-card{
+    background:var(--card);border:1px solid var(--border);border-radius:18px;
+    padding:24px;position:relative;overflow:hidden;
+  }
+  .chart-card:hover{border-color:rgba(99,102,241,.4);}
+  .chart-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+  .chart-sub{font-size:12px;color:var(--muted);margin-bottom:18px;}
+  .chart-wrap{position:relative;width:100%;}
+  /* ── TABLE ── */
+  .tbl{width:100%;border-collapse:collapse;font-size:13px;}
+  .tbl th{background:rgba(99,102,241,.12);color:#a5b4fc;font-weight:600;
+    font-size:11px;letter-spacing:.5px;text-transform:uppercase;
+    padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+  .tbl td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);}
+  .tbl tr:last-child td{border-bottom:none;}
+  .tbl tr:hover td{background:rgba(99,102,241,.06);}
+  .badge{display:inline-block;border-radius:50px;padding:3px 10px;
+    font-size:11px;font-weight:600;}
+  .badge-green{background:rgba(16,185,129,.15);color:#34d399;}
+  .badge-amber{background:rgba(245,158,11,.15);color:#fcd34d;}
+  .badge-red{background:rgba(239,68,68,.15);color:#f87171;}
+  .badge-blue{background:rgba(99,102,241,.15);color:#a5b4fc;}
+  /* ── FOOTER ── */
+  .footer{text-align:center;padding:32px;color:var(--muted);font-size:12px;
+    border-top:1px solid var(--border);margin-top:24px;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ HEADER -->
+<div class="header">
+  <div class="header-badge">📊 Project 14 · Real Estate Analytics</div>
+  <h1>Real Estate Sales &amp; Rental Market<br>Analysis Dashboard</h1>
+  <p>Texas Market · 30 Properties · 7 Locations · 16 Sales · 18 Leases · 48 Rent Payments · Phases 1–7</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi" style="--kpi-color:#6366f1">
+    <div class="kpi-label">Total Properties</div>
+    <div class="kpi-value">30</div>
+    <div class="kpi-sub">Across 7 locations</div>
+  </div>
+  <div class="kpi" style="--kpi-color:#10b981">
+    <div class="kpi-label">Completed Sales</div>
+    <div class="kpi-value">16</div>
+    <div class="kpi-sub">Via 6 agents</div>
+  </div>
+  <div class="kpi" style="--kpi-color:#f59e0b">
+    <div class="kpi-label">Median Sale Price</div>
+    <div class="kpi-value">$532K</div>
+    <div class="kpi-sub">Across all sales</div>
+  </div>
+  <div class="kpi" style="--kpi-color:#06b6d4">
+    <div class="kpi-label">Active Leases</div>
+    <div class="kpi-value">10</div>
+    <div class="kpi-sub">Monthly income $66K+</div>
+  </div>
+  <div class="kpi" style="--kpi-color:#8b5cf6">
+    <div class="kpi-label">Avg Gross Yield</div>
+    <div class="kpi-value">5.8%</div>
+    <div class="kpi-sub">Rental properties</div>
+  </div>
+  <div class="kpi" style="--kpi-color:#ec4899">
+    <div class="kpi-label">Avg Days on Market</div>
+    <div class="kpi-value">64</div>
+    <div class="kpi-sub">Listed to closed</div>
+  </div>
+  <div class="kpi" style="--kpi-color:#10b981">
+    <div class="kpi-label">Rental Income (H1'23)</div>
+    <div class="kpi-value">$397K</div>
+    <div class="kpi-sub">6 months collected</div>
+  </div>
+  <div class="kpi" style="--kpi-color:#ef4444">
+    <div class="kpi-label">Stale Listings (&gt;90d)</div>
+    <div class="kpi-value">7</div>
+    <div class="kpi-sub">Require action</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SECTION 1 -->
+<div class="section-title">📍 Phase 2 – Schema &amp; Property Distribution</div>
+<div class="grid grid-2">
+
+  <!-- Chart 1: Properties by Type (Pie) -->
+  <div class="chart-card">
+    <div class="chart-title">Properties by Type</div>
+    <div class="chart-sub">Phase 2 · 30 total properties across 5 types</div>
+    <div class="chart-wrap" style="height:260px"><canvas id="c_proptype"></canvas></div>
+  </div>
+
+  <!-- Chart 2: Properties by City (Bar) -->
+  <div class="chart-card">
+    <div class="chart-title">Properties by City</div>
+    <div class="chart-sub">Phase 2 · Regional inventory distribution</div>
+    <div class="chart-wrap" style="height:260px"><canvas id="c_propCity"></canvas></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SECTION 2 -->
+<div class="section-title">💰 Phase 5 Tasks 2–4 – Sale Price Analysis</div>
+<div class="grid grid-2">
+
+  <!-- Chart 3: Avg & Median Sale Price by City -->
+  <div class="chart-card">
+    <div class="chart-title">Avg vs Median Sale Price by City</div>
+    <div class="chart-sub">Task 2 · Based on completed sales transactions</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="c_priceCity"></canvas></div>
+  </div>
+
+  <!-- Chart 4: Price per Sqft by City -->
+  <div class="chart-card">
+    <div class="chart-title">Average Price per Sq Ft by City</div>
+    <div class="chart-sub">Task 3 · Valid area properties only (&gt;0, &lt;50,000 sqft)</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="c_pricePerSqft"></canvas></div>
+  </div>
+
+  <!-- Chart 5: Avg Price by Property Type (Horizontal bar) -->
+  <div class="chart-card">
+    <div class="chart-title">Average Purchase Price by Property Type</div>
+    <div class="chart-sub">Task 4 · Full portfolio comparison</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="c_priceType"></canvas></div>
+  </div>
+
+  <!-- Chart 6: Listing vs Sale Price Variance -->
+  <div class="chart-card">
+    <div class="chart-title">Listing Price vs Sale Price</div>
+    <div class="chart-sub">Task 13 · Price negotiation outcome per transaction</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="c_listVsSale"></canvas></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SECTION 3 -->
+<div class="section-title">📅 Phase 5 Tasks 5–6 – Market Velocity</div>
+<div class="grid grid-2">
+
+  <!-- Chart 7: Days on Market per Property -->
+  <div class="chart-card">
+    <div class="chart-title">Days on Market – Completed Sales</div>
+    <div class="chart-sub">Task 5 · Listing date to sale date (listing-linked only)</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="c_dom"></canvas></div>
+  </div>
+
+  <!-- Chart 8: Stale Listings Breakdown -->
+  <div class="chart-card">
+    <div class="chart-title">Unsold Listings by Age Category</div>
+    <div class="chart-sub">Task 6 · Listings active beyond 90 days</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="c_stale"></canvas></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SECTION 4 -->
+<div class="section-title">🏠 Phase 5 Tasks 7–9 – Rental Performance</div>
+<div class="grid grid-2">
+
+  <!-- Chart 9: Monthly Rental Income Trend (Line) -->
+  <div class="chart-card">
+    <div class="chart-title">Monthly Rental Income Collected – H1 2023</div>
+    <div class="chart-sub">Task 7 · Aggregated across all active properties</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="c_rentMonthly"></canvas></div>
+  </div>
+
+  <!-- Chart 10: Gross Rental Yield by Property -->
+  <div class="chart-card">
+    <div class="chart-title">Gross Rental Yield % by Property</div>
+    <div class="chart-sub">Task 8 · (Annual Rent / Purchase Price) × 100</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="c_yield"></canvas></div>
+  </div>
+
+  <!-- Chart 11: Occupancy Rate by Property -->
+  <div class="chart-card">
+    <div class="chart-title">Occupancy Rate 2023 by Property</div>
+    <div class="chart-sub">Task 9 · Occupied days / 365 × 100 (Residential only)</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="c_occupancy"></canvas></div>
+  </div>
+
+  <!-- Chart 12: Payment Status Breakdown -->
+  <div class="chart-card">
+    <div class="chart-title">Rental Payment Status Distribution</div>
+    <div class="chart-sub">Task 14 · 48 total payment records</div>
+    <div class="chart-wrap" style="height:280px"><canvas id="c_payStatus"></canvas></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SECTION 5 -->
+<div class="section-title">🔍 Phase 4 – Data Quality Assessment</div>
+<div class="grid grid-2">
+
+  <!-- Chart 13: Data Quality Issues -->
+  <div class="chart-card">
+    <div class="chart-title">Data Quality Issues Found</div>
+    <div class="chart-sub">Phase 4 · Deliberate anomalies injected for validation</div>
+    <div class="chart-wrap" style="height:260px"><canvas id="c_quality"></canvas></div>
+  </div>
+
+  <!-- Chart 14: Sale Performance: Above / Below / At Asking -->
+  <div class="chart-card">
+    <div class="chart-title">Sale Performance vs Asking Price</div>
+    <div class="chart-sub">Task 13 · Negotiation outcome for listed sales</div>
+    <div class="chart-wrap" style="height:260px"><canvas id="c_salePerfPie"></canvas></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SECTION 6 -->
+<div class="section-title">🌐 Phase 6 – Location Market Performance</div>
+<div class="grid grid-1">
+
+  <!-- Chart 15: Full Location Radar / Multi-axis bar -->
+  <div class="chart-card">
+    <div class="chart-title">Location-Level Market Performance – Key KPIs</div>
+    <div class="chart-sub">Task 15 &amp; Phase 6 · Consolidated executive view: Avg Sale Price, Rental Yield, Occupancy per location</div>
+    <div class="chart-wrap" style="height:340px"><canvas id="c_locPerf"></canvas></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SECTION 7 -->
+<div class="section-title">✅ Phase 7 – Validation &amp; Reconciliation Summary</div>
+<div class="grid grid-2">
+
+  <!-- Chart 16: Row counts per table -->
+  <div class="chart-card">
+    <div class="chart-title">Row Count per Table (Reconciliation)</div>
+    <div class="chart-sub">Phase 7 · Expected vs inserted rows after deduplication</div>
+    <div class="chart-wrap" style="height:260px"><canvas id="c_rowCount"></canvas></div>
+  </div>
+
+  <!-- Table: Stale listing details -->
+  <div class="chart-card">
+    <div class="chart-title">🚨 Stale &amp; Aging Listings Detail</div>
+    <div class="chart-sub">Task 6 · Listings exceeding 90-day threshold</div>
+    <div style="overflow-x:auto;margin-top:4px">
+    <table class="tbl">
+      <thead><tr>
+        <th>Address</th><th>City</th><th>Age (Days)</th><th>Status</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>606 Long Unsold St #6</td><td>San Antonio</td><td>437</td>
+          <td><span class="badge badge-red">Critically Stale &gt;180d</span></td></tr>
+        <tr><td>707 Stale Villa Blvd</td><td>Austin</td><td>390</td>
+          <td><span class="badge badge-red">Critically Stale &gt;180d</span></td></tr>
+        <tr><td>101 Bad Area Ln #1</td><td>Austin</td><td>288</td>
+          <td><span class="badge badge-red">Critically Stale &gt;180d</span></td></tr>
+        <tr><td>202 Zero Area Way #2</td><td>Dallas</td><td>268</td>
+          <td><span class="badge badge-red">Critically Stale &gt;180d</span></td></tr>
+        <tr><td>303 Crazy Giant Estate</td><td>Austin</td><td>218</td>
+          <td><span class="badge badge-amber">Aging &gt;90d</span></td></tr>
+        <tr><td>909 Duplicate Blvd #9A</td><td>Dallas</td><td>128</td>
+          <td><span class="badge badge-amber">Aging &gt;90d</span></td></tr>
+        <tr><td>320 Las Lomas Dr</td><td>Austin</td><td>121</td>
+          <td><span class="badge badge-amber">Aging &gt;90d</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SECTION 8 -->
+<div class="section-title">👥 Agent Performance Summary</div>
+<div class="grid grid-2">
+
+  <!-- Chart 17: Sales by Agent -->
+  <div class="chart-card">
+    <div class="chart-title">Completed Sales by Agent</div>
+    <div class="chart-sub">Phase 5 · Derived from listing and transaction data</div>
+    <div class="chart-wrap" style="height:260px"><canvas id="c_agentSales"></canvas></div>
+  </div>
+
+  <!-- Chart 18: Commission Earned by Agent -->
+  <div class="chart-card">
+    <div class="chart-title">Total Commission Earned by Agent ($)</div>
+    <div class="chart-sub">Phase 5 · From sales_transactions commission_amount</div>
+    <div class="chart-wrap" style="height:260px"><canvas id="c_agentComm"></canvas></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Project 14 · Real Estate Sales &amp; Rental Market Analytics · MySQL 8.0 · Texas Market Dataset<br>
+  <span style="opacity:.5">Phases 1–7 SQL Analysis · 30 Properties · 7 Locations · Austin · Dallas · Houston · San Antonio</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ EMBEDDED CHART.JS -->
+<script>
+/* ── CHART.JS 4.4 BUNDLED INLINE (minified subset) ── */
+/* We use a CDN with a reliable fallback approach - load synchronously */
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" 
+  onerror="loadFallback()"></script>
+<script>
+/* ─────────────────────────────────────────────────────────────────────
+   FALLBACK: Minimal Chart.js-compatible renderer using Canvas 2D API
+   Activates only if CDN fails (offline mode)
+───────────────────────────────────────────────────────────────────── */
+function loadFallback(){
+  window.Chart = class Chart {
+    constructor(ctx, cfg){
+      this.ctx = ctx; this.cfg = cfg;
+      this._draw();
+    }
+    _draw(){
+      const canvas = this.ctx.canvas || this.ctx;
+      const ctx2 = canvas.getContext('2d');
+      const w = canvas.width || canvas.offsetWidth || 500;
+      const h = canvas.height || canvas.offsetHeight || 300;
+      canvas.width = w; canvas.height = h;
+      const cfg = this.cfg;
+      const type = cfg.type;
+      const data = cfg.data;
+      const labels = data.labels || [];
+      const ds = data.datasets || [];
+
+      ctx2.clearRect(0,0,w,h);
+      ctx2.fillStyle = '#1a1d27';
+      ctx2.fillRect(0,0,w,h);
+
+      if(type==='doughnut'||type==='pie') this._drawPie(ctx2,w,h,labels,ds);
+      else if(type==='bar'||type==='horizontalBar') this._drawBar(ctx2,w,h,labels,ds,type==='horizontalBar');
+      else if(type==='line') this._drawLine(ctx2,w,h,labels,ds);
+      else this._drawBar(ctx2,w,h,labels,ds,false);
+    }
+    _colors(n){
+      const palette=['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899','#84cc16','#f97316','#14b8a6'];
+      return Array.from({length:n},(_,i)=>palette[i%palette.length]);
+    }
+    _drawPie(ctx2,w,h,labels,ds){
+      if(!ds[0])return;
+      const vals = ds[0].data.map(Number);
+      const colors = ds[0].backgroundColor || this._colors(vals.length);
+      const total = vals.reduce((a,b)=>a+b,0);
+      const cx=w*0.38, cy=h/2, r=Math.min(cx,cy)*0.78;
+      let startAngle=-Math.PI/2;
+      vals.forEach((v,i)=>{
+        const slice=(v/total)*2*Math.PI;
+        ctx2.beginPath();ctx2.moveTo(cx,cy);
+        ctx2.arc(cx,cy,r,startAngle,startAngle+slice);
+        ctx2.closePath();
+        ctx2.fillStyle=colors[i];ctx2.fill();
+        ctx2.strokeStyle='#0f1117';ctx2.lineWidth=2;ctx2.stroke();
+        startAngle+=slice;
+      });
+      // legend
+      const lx=w*0.64, ly=cy-labels.length*13;
+      labels.forEach((l,i)=>{
+        const y=ly+i*26;
+        ctx2.fillStyle=colors[i]||'#999';
+        ctx2.fillRect(lx,y,14,14);
+        ctx2.fillStyle='#e2e8f0';ctx2.font='12px Inter,sans-serif';
+        ctx2.fillText(l+': '+vals[i],lx+20,y+11);
+      });
+    }
+    _drawBar(ctx2,w,h,labels,ds,horiz){
+      const pad={l:60,r:24,t:16,b:60};
+      const cw=w-pad.l-pad.r, ch=h-pad.t-pad.b;
+      const numDs=ds.length, n=labels.length;
+      const allVals=ds.flatMap(d=>d.data.map(Number));
+      const maxV=Math.max(...allVals,1);
+      const colors=ds.map((d,i)=>d.backgroundColor||this._colors(numDs)[i]);
+      // grid
+      ctx2.strokeStyle='rgba(255,255,255,.07)';ctx2.lineWidth=1;
+      for(let i=0;i<=4;i++){
+        const y=pad.t+ch*(1-i/4);
+        ctx2.beginPath();ctx2.moveTo(pad.l,y);ctx2.lineTo(pad.l+cw,y);ctx2.stroke();
+        ctx2.fillStyle='#64748b';ctx2.font='10px Inter,sans-serif';ctx2.textAlign='right';
+        ctx2.fillText(Math.round(maxV*i/4/1000)+'k',pad.l-6,y+4);
+      }
+      // bars
+      const groupW=cw/n, barW=(groupW*0.8)/numDs;
+      ds.forEach((d,di)=>{
+        const clr=Array.isArray(colors[di])?colors[di][0]:colors[di];
+        d.data.forEach((v,bi)=>{
+          const bh=(Number(v)/maxV)*ch;
+          const x=pad.l+bi*groupW+(groupW*0.1)+di*barW;
+          const y=pad.t+ch-bh;
+          ctx2.fillStyle=clr||'#6366f1';
+          ctx2.fillRect(x,y,barW-2,bh);
+        });
+      });
+      // labels
+      ctx2.fillStyle='#94a3b8';ctx2.font='11px Inter,sans-serif';ctx2.textAlign='center';
+      labels.forEach((l,i)=>{
+        const x=pad.l+i*groupW+groupW/2;
+        const short=l.length>10?l.substring(0,10)+'…':l;
+        ctx2.fillText(short,x,h-pad.b+16);
+      });
+      // legend
+      if(numDs>1){
+        let lx=pad.l;
+        ds.forEach((d,i)=>{
+          const clr=Array.isArray(colors[i])?colors[i][0]:colors[i];
+          ctx2.fillStyle=clr;ctx2.fillRect(lx,pad.t-14,10,10);
+          ctx2.fillStyle='#94a3b8';ctx2.font='11px Inter,sans-serif';ctx2.textAlign='left';
+          ctx2.fillText(d.label||'',lx+14,pad.t-4);
+          lx+=ctx2.measureText(d.label||'').width+40;
+        });
+      }
+    }
+    _drawLine(ctx2,w,h,labels,ds){
+      const pad={l:60,r:24,t:24,b:48};
+      const cw=w-pad.l-pad.r, ch=h-pad.t-pad.b;
+      const allVals=ds.flatMap(d=>d.data.map(Number));
+      const maxV=Math.max(...allVals,1), minV=0;
+      const n=labels.length;
+      const colors=ds.map((d,i)=>d.borderColor||this._colors(ds.length)[i]);
+      // grid
+      ctx2.strokeStyle='rgba(255,255,255,.07)';ctx2.lineWidth=1;
+      for(let i=0;i<=4;i++){
+        const y=pad.t+ch*(1-i/4);
+        ctx2.beginPath();ctx2.moveTo(pad.l,y);ctx2.lineTo(pad.l+cw,y);ctx2.stroke();
+        ctx2.fillStyle='#64748b';ctx2.font='10px Inter,sans-serif';ctx2.textAlign='right';
+        ctx2.fillText(Math.round((maxV*i/4)/1000)+'k',pad.l-6,y+4);
+      }
+      ds.forEach((d,di)=>{
+        const clr=colors[di];
+        ctx2.beginPath();ctx2.strokeStyle=clr;ctx2.lineWidth=2.5;
+        d.data.forEach((v,i)=>{
+          const x=pad.l+(i/(n-1||1))*cw;
+          const y=pad.t+ch-(Number(v)-minV)/(maxV-minV||1)*ch;
+          if(i===0)ctx2.moveTo(x,y); else ctx2.lineTo(x,y);
+        });
+        ctx2.stroke();
+        // fill
+        ctx2.beginPath();
+        d.data.forEach((v,i)=>{
+          const x=pad.l+(i/(n-1||1))*cw;
+          const y=pad.t+ch-(Number(v)-minV)/(maxV-minV||1)*ch;
+          if(i===0)ctx2.moveTo(x,y); else ctx2.lineTo(x,y);
+        });
+        ctx2.lineTo(pad.l+cw,pad.t+ch);ctx2.lineTo(pad.l,pad.t+ch);ctx2.closePath();
+        ctx2.fillStyle=clr.replace(')',', 0.12)').replace('rgb(','rgba(').replace('#','')||'rgba(99,102,241,.1)';
+        ctx2.fill();
+      });
+      // x labels
+      ctx2.fillStyle='#94a3b8';ctx2.font='11px Inter,sans-serif';ctx2.textAlign='center';
+      labels.forEach((l,i)=>{
+        const x=pad.l+(i/(n-1||1))*cw;
+        ctx2.fillText(l,x,h-pad.b+14);
+      });
+    }
+    destroy(){}
+    update(){}
+  };
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   CHART INITIALIZATION – runs once DOM + Chart.js are ready
+───────────────────────────────────────────────────────────────────── */
+function initCharts(){
+  // Shared defaults
+  const FONT = {family:"'Inter', system-ui, sans-serif", size:12};
+  const GRID = {color:'rgba(255,255,255,.06)'};
+  const LEGEND = {labels:{color:'#94a3b8',font:FONT,boxWidth:12,padding:16}};
+  const TOOLTIP = {
+    backgroundColor:'rgba(15,17,23,.95)',
+    borderColor:'rgba(99,102,241,.4)',borderWidth:1,
+    titleColor:'#e2e8f0',bodyColor:'#94a3b8',
+    padding:12,cornerRadius:8
+  };
+  const TICK = {color:'#64748b',font:FONT};
+  const PALETTE = ['#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899','#84cc16'];
+
+  function defaults(extra){
+    return Object.assign({
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:LEGEND, tooltip:TOOLTIP}
+    }, extra||{});
+  }
+  function scaleXY(xOpts, yOpts){
+    return { scales:{
+      x:Object.assign({ticks:TICK, grid:GRID, border:{color:'rgba(255,255,255,.1)'}}, xOpts||{}),
+      y:Object.assign({ticks:TICK, grid:GRID, border:{color:'rgba(255,255,255,.1)'}}, yOpts||{})
+    }};
+  }
+
+  /* ════════════════════════════════
+     C1 · Properties by Type (Doughnut)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_proptype'), {
+    type:'doughnut',
+    data:{
+      labels:['Apartment','Independent House','Villa','Commercial'],
+      datasets:[{
+        data:[12, 8, 5, 5],
+        backgroundColor:['#6366f1','#10b981','#f59e0b','#06b6d4'],
+        borderColor:'#0f1117', borderWidth:3,
+        hoverOffset:10
+      }]
+    },
+    options: defaults({
+      plugins:{
+        legend:{position:'right', labels:{color:'#94a3b8',font:FONT,boxWidth:14,padding:14}},
+        tooltip:TOOLTIP
+      },
+      cutout:'60%'
+    })
+  });
+
+  /* ════════════════════════════════
+     C2 · Properties by City (Bar)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_propCity'),{
+    type:'bar',
+    data:{
+      labels:['Austin','Dallas','Houston','San Antonio'],
+      datasets:[{
+        label:'Properties',
+        data:[10, 9, 7, 4],
+        backgroundColor:['#6366f1','#8b5cf6','#06b6d4','#10b981'],
+        borderRadius:6, borderSkipped:false
+      }]
+    },
+    options: Object.assign(defaults(), scaleXY(
+      {}, {beginAtZero:true, ticks:{...TICK, stepSize:2}}
+    ), {plugins:{legend:{display:false}, tooltip:TOOLTIP}})
+  });
+
+  /* ════════════════════════════════
+     C3 · Avg vs Median Sale Price by City
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_priceCity'),{
+    type:'bar',
+    data:{
+      labels:['Austin','Austin\nWestlake','Dallas','Houston','The\nWoodlands','San Antonio'],
+      datasets:[
+        {label:'Avg Sale Price ($)',  data:[487500,2950000,522500,290000,1595000,450000], backgroundColor:'#6366f1', borderRadius:5},
+        {label:'Median Sale Price ($)',data:[487500,2950000,522500,290000,1595000,450000], backgroundColor:'#10b981', borderRadius:5}
+      ]
+    },
+    options: Object.assign(defaults(), scaleXY(
+      {},
+      {beginAtZero:true, ticks:{...TICK, callback:v=>v>=1e6?(v/1e6).toFixed(1)+'M':v>=1e3?(v/1e3).toFixed(0)+'K':v}}
+    ))
+  });
+
+  /* ════════════════════════════════
+     C4 · Price per Sqft by City
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_pricePerSqft'),{
+    type:'bar',
+    data:{
+      labels:['Austin DT','Westlake','Dallas Uptown','Plano','Houston RF','Woodlands','San Antonio'],
+      datasets:[{
+        label:'Avg $/sqft',
+        data:[418, 528, 415, 259, 365, 345, 354],
+        backgroundColor:['#6366f1','#8b5cf6','#06b6d4','#10b981','#f59e0b','#ec4899','#84cc16'],
+        borderRadius:6, borderSkipped:false
+      }]
+    },
+    options: Object.assign(defaults(), scaleXY(
+      {ticks:{...TICK, maxRotation:30}},
+      {beginAtZero:true, ticks:{...TICK, callback:v=>'$'+v}}
+    ), {plugins:{legend:{display:false}, tooltip:TOOLTIP}})
+  });
+
+  /* ════════════════════════════════
+     C5 · Avg Price by Property Type (Horizontal bar)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_priceType'),{
+    type:'bar',
+    data:{
+      labels:['Villa','Commercial','Indep. House','Apartment'],
+      datasets:[{
+        label:'Avg Purchase Price ($)',
+        data:[2816667,1500000,935714,415000],
+        backgroundColor:['#f59e0b','#06b6d4','#10b981','#6366f1'],
+        borderRadius:6
+      }]
+    },
+    options: Object.assign(defaults(), {
+      indexAxis:'y',
+      scales:{
+        x:{ticks:{...TICK, callback:v=>v>=1e6?(v/1e6).toFixed(1)+'M':'$'+(v/1e3).toFixed(0)+'K'}, grid:GRID},
+        y:{ticks:TICK, grid:{color:'transparent'}}
+      },
+      plugins:{legend:{display:false}, tooltip:TOOLTIP}
+    })
+  });
+
+  /* ════════════════════════════════
+     C6 · Listing vs Sale Price (Bar)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_listVsSale'),{
+    type:'bar',
+    data:{
+      labels:['T1 (Prop1)','T2 (Prop4)','T3 (Prop7)','T4 (Prop10)','T5 (Prop13)','T6 (Prop16)','T7 (Prop19)','T8 (Prop20)'],
+      datasets:[
+        {label:'Listing Price ($)', data:[510000,3100000,545000,760000,299000,1680000,395000,520000], backgroundColor:'rgba(99,102,241,.6)', borderRadius:4},
+        {label:'Sale Price ($)',    data:[495000,3050000,535000,750000,290000,1640000,390000,510000], backgroundColor:'rgba(16,185,129,.7)', borderRadius:4}
+      ]
+    },
+    options: Object.assign(defaults(), scaleXY(
+      {ticks:{...TICK, maxRotation:30}},
+      {beginAtZero:false, ticks:{...TICK, callback:v=>v>=1e6?(v/1e6).toFixed(1)+'M':'$'+(v/1e3).toFixed(0)+'K'}}
+    ))
+  });
+
+  /* ════════════════════════════════
+     C7 · Days on Market (Bar)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_dom'),{
+    type:'bar',
+    data:{
+      labels:['Prop1\n(Austin)','Prop4\n(Westlake)','Prop7\n(Dallas)','Prop10\n(Plano)','Prop13\n(Houston)','Prop16\n(Woodlands)','Prop19\n(SA)','Prop20\n(SA)','Prop28\n(Austin)'],
+      datasets:[{
+        label:'Days on Market',
+        data:[61, 93, 65, 64, 70, 72, 66, 85, 108],
+        backgroundColor: d => {
+          const v = d.raw;
+          return v > 90 ? '#ef4444' : v > 70 ? '#f59e0b' : '#10b981';
+        },
+        backgroundColor:['#10b981','#ef4444','#10b981','#10b981','#10b981','#10b981','#10b981','#f59e0b','#ef4444'],
+        borderRadius:5
+      }]
+    },
+    options: Object.assign(defaults(), scaleXY(
+      {ticks:{...TICK, maxRotation:30}},
+      {beginAtZero:true, ticks:{...TICK, callback:v=>v+' d'}}
+    ), {
+      plugins:{legend:{display:false}, tooltip:TOOLTIP},
+      scales:{
+        x:{ticks:TICK, grid:GRID},
+        y:{beginAtZero:true, ticks:{...TICK, callback:v=>v+' days'}, grid:GRID}
+      }
+    })
+  });
+
+  /* ════════════════════════════════
+     C8 · Stale Listings by Category (Pie)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_stale'),{
+    type:'doughnut',
+    data:{
+      labels:['Critically Stale (>180d)','Aging Inventory (>90d)'],
+      datasets:[{
+        data:[4, 3],
+        backgroundColor:['#ef4444','#f59e0b'],
+        borderColor:'#0f1117', borderWidth:3, hoverOffset:8
+      }]
+    },
+    options: defaults({
+      cutout:'55%',
+      plugins:{
+        legend:{position:'bottom', labels:{color:'#94a3b8', font:FONT, padding:16}},
+        tooltip:TOOLTIP
+      }
+    })
+  });
+
+  /* ════════════════════════════════
+     C9 · Monthly Rental Income – H1 2023 (Line)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_rentMonthly'),{
+    type:'line',
+    data:{
+      labels:['Jan 2023','Feb 2023','Mar 2023','Apr 2023','May 2023','Jun 2023'],
+      datasets:[
+        {
+          label:'Total Rent Collected ($)',
+          data:[54350, 52050, 53050, 53050, 49450, 52800],
+          borderColor:'#6366f1', backgroundColor:'rgba(99,102,241,.15)',
+          tension:0.4, fill:true, pointRadius:5, pointHoverRadius:8,
+          pointBackgroundColor:'#6366f1', borderWidth:2.5
+        },
+        {
+          label:'Rent Due ($)',
+          data:[54350, 54350, 54350, 54350, 54350, 54350],
+          borderColor:'rgba(245,158,11,.5)', backgroundColor:'transparent',
+          tension:0, fill:false, borderDash:[6,4], pointRadius:0, borderWidth:1.5
+        }
+      ]
+    },
+    options: Object.assign(defaults(), scaleXY(
+      {},
+      {beginAtZero:false,
+       ticks:{...TICK, callback:v=>'$'+(v/1000).toFixed(0)+'K'}}
+    ))
+  });
+
+  /* ════════════════════════════════
+     C10 · Gross Rental Yield % (Bar)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_yield'),{
+    type:'bar',
+    data:{
+      labels:['P2 Apt\n(DT Austin)','P5 House\n(Westlake)','P8 Apt\n(Dallas)','P11 House\n(Plano)','P12 Apt\n(Plano)','P14 Comm\n(Houston)','P17 Villa\n(Woodlands)','P18 House\n(Woodlands)'],
+      datasets:[{
+        label:'Gross Rental Yield (%)',
+        data:[7.75, 5.82, 6.61, null, 6.88, null, 5.63, 7.07],
+        backgroundColor:v=>{
+          const val=v.raw;
+          return val===null?'#2d3748':val>=7?'#10b981':val>=5.5?'#6366f1':'#f59e0b';
+        },
+        backgroundColor:['#10b981','#6366f1','#6366f1','#2d3748','#6366f1','#2d3748','#f59e0b','#10b981'],
+        borderRadius:5
+      }]
+    },
+    options: Object.assign(defaults(), scaleXY(
+      {ticks:{...TICK, maxRotation:30}},
+      {beginAtZero:true, ticks:{...TICK, callback:v=>v+'%'}, suggestedMax:10}
+    ), {plugins:{legend:{display:false}, tooltip:TOOLTIP}})
+  });
+
+  /* ════════════════════════════════
+     C11 · Occupancy Rate 2023 (Bar)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_occupancy'),{
+    type:'bar',
+    data:{
+      labels:['P2','P5','P8','P11','P12','P17','P18'],
+      datasets:[{
+        label:'Occupancy Rate 2023 (%)',
+        data:[100, 100, 75.6, 100, 75, 100, 100],
+        backgroundColor:v=>v.raw>=100?'#10b981':v.raw>=80?'#6366f1':'#f59e0b',
+        backgroundColor:['#10b981','#10b981','#6366f1','#10b981','#6366f1','#10b981','#10b981'],
+        borderRadius:5
+      }]
+    },
+    options: Object.assign(defaults(), scaleXY(
+      {},
+      {beginAtZero:true, max:100, ticks:{...TICK, callback:v=>v+'%'}}
+    ), {plugins:{legend:{display:false}, tooltip:TOOLTIP}})
+  });
+
+  /* ════════════════════════════════
+     C12 · Payment Status Breakdown (Doughnut)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_payStatus'),{
+    type:'doughnut',
+    data:{
+      labels:['Paid (On Time)','Late','Partial','Unpaid'],
+      datasets:[{
+        data:[37, 4, 2, 3],
+        backgroundColor:['#10b981','#f59e0b','#8b5cf6','#ef4444'],
+        borderColor:'#0f1117', borderWidth:3, hoverOffset:8
+      }]
+    },
+    options: defaults({
+      cutout:'60%',
+      plugins:{
+        legend:{position:'right', labels:{color:'#94a3b8', font:FONT, boxWidth:14, padding:12}},
+        tooltip:TOOLTIP
+      }
+    })
+  });
+
+  /* ════════════════════════════════
+     C13 · Data Quality Issues (Horizontal Bar)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_quality'),{
+    type:'bar',
+    data:{
+      labels:['Negative Area','Zero Area','Giant Area (>50K)','Negative Price','NULL Area','NULL Price','Inverted Sale Date','Inverted Lease Date','Orphan Transaction'],
+      datasets:[{
+        label:'Count',
+        data:[1, 1, 1, 2, 1, 2, 1, 1, 1],
+        backgroundColor:['#ef4444','#ef4444','#f59e0b','#ef4444','#f59e0b','#ef4444','#8b5cf6','#8b5cf6','#ef4444'],
+        borderRadius:4
+      }]
+    },
+    options: Object.assign(defaults(), {
+      indexAxis:'y',
+      scales:{
+        x:{ticks:{...TICK, stepSize:1}, grid:GRID},
+        y:{ticks:{...TICK, font:{size:11}}, grid:{color:'transparent'}}
+      },
+      plugins:{legend:{display:false}, tooltip:TOOLTIP}
+    })
+  });
+
+  /* ════════════════════════════════
+     C14 · Sale Performance Pie
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_salePerfPie'),{
+    type:'pie',
+    data:{
+      labels:['Sold Below Asking','Sold At Asking','Sold Above Asking'],
+      datasets:[{
+        data:[7, 0, 1],
+        backgroundColor:['#ef4444','#10b981','#6366f1'],
+        borderColor:'#0f1117', borderWidth:3, hoverOffset:8
+      }]
+    },
+    options: defaults({
+      plugins:{
+        legend:{position:'bottom', labels:{color:'#94a3b8', font:FONT, padding:14}},
+        tooltip:TOOLTIP
+      }
+    })
+  });
+
+  /* ════════════════════════════════
+     C15 · Location Market Performance (Grouped Bar)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_locPerf'),{
+    type:'bar',
+    data:{
+      labels:['Downtown\nAustin','Westlake\nHills','Uptown\nDallas','Plano\nTech','Houston\nRiverfront','The\nWoodlands','Pearl Dist.\nSan Antonio'],
+      datasets:[
+        {
+          label:'Avg Sale Price ($K)',
+          data:[487.5, 2950, 522.5, 735, 290, 1595, 450],
+          backgroundColor:'rgba(99,102,241,.8)', borderRadius:4, yAxisID:'y'
+        },
+        {
+          label:'Avg Gross Yield (%)',
+          data:[7.75, 5.72, 6.61, 6.88, 0, 6.35, 0],
+          backgroundColor:'rgba(16,185,129,.8)', borderRadius:4, yAxisID:'y2'
+        },
+        {
+          label:'Avg Occupancy Rate (%)',
+          data:[100, 100, 75.6, 87.5, 0, 100, 0],
+          backgroundColor:'rgba(245,158,11,.8)', borderRadius:4, yAxisID:'y2'
+        }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:LEGEND, tooltip:TOOLTIP},
+      scales:{
+        x:{ticks:TICK, grid:GRID},
+        y:{
+          position:'left', beginAtZero:true,
+          ticks:{...TICK, callback:v=>'$'+(v/1e3).toFixed(0)+'K'},
+          grid:GRID, title:{display:true, text:'Sale Price ($K)', color:'#6366f1', font:FONT}
+        },
+        y2:{
+          position:'right', beginAtZero:true, max:120,
+          ticks:{...TICK, callback:v=>v+'%'},
+          grid:{drawOnChartArea:false},
+          title:{display:true, text:'% (Yield / Occupancy)', color:'#10b981', font:FONT}
+        }
+      }
+    }
+  });
+
+  /* ════════════════════════════════
+     C16 · Row Counts per Table (Horizontal Bar)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_rowCount'),{
+    type:'bar',
+    data:{
+      labels:['locations','properties','property_listings','sales_transactions','rental_leases','rental_payments'],
+      datasets:[{
+        label:'Row Count',
+        data:[7, 30, 30, 16, 18, 48],
+        backgroundColor:['#6366f1','#8b5cf6','#06b6d4','#10b981','#f59e0b','#ec4899'],
+        borderRadius:6
+      }]
+    },
+    options: Object.assign(defaults(), {
+      indexAxis:'y',
+      scales:{
+        x:{ticks:{...TICK, stepSize:5}, grid:GRID, beginAtZero:true},
+        y:{ticks:TICK, grid:{color:'transparent'}}
+      },
+      plugins:{legend:{display:false}, tooltip:TOOLTIP}
+    })
+  });
+
+  /* ════════════════════════════════
+     C17 · Sales by Agent (Bar)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_agentSales'),{
+    type:'bar',
+    data:{
+      labels:['Sarah Jenkins','Michael Chang','David Miller','Jessica Taylor','Robert Rodriguez','Emily Watson','Carlos Gomez'],
+      datasets:[{
+        label:'Transactions',
+        data:[3, 2, 2, 2, 2, 2, 3],
+        backgroundColor:PALETTE,
+        borderRadius:6
+      }]
+    },
+    options: Object.assign(defaults(), scaleXY(
+      {ticks:{...TICK, maxRotation:30}},
+      {beginAtZero:true, ticks:{...TICK, stepSize:1}}
+    ), {plugins:{legend:{display:false}, tooltip:TOOLTIP}})
+  });
+
+  /* ════════════════════════════════
+     C18 · Commission by Agent (Horizontal Bar)
+  ════════════════════════════════ */
+  new Chart(document.getElementById('c_agentComm'),{
+    type:'bar',
+    data:{
+      labels:['Emily Watson','Michael Chang','Jessica Taylor','Carlos Gomez','Sarah Jenkins','David Miller','Robert Rodriguez'],
+      datasets:[{
+        label:'Commission ($)',
+        data:[82000, 152500, 37500, 25500, 48000, 53750, 14500],
+        backgroundColor:['#10b981','#f59e0b','#06b6d4','#ec4899','#6366f1','#8b5cf6','#ef4444'],
+        borderRadius:6
+      }]
+    },
+    options: Object.assign(defaults(), {
+      indexAxis:'y',
+      scales:{
+        x:{ticks:{...TICK, callback:v=>'$'+(v/1000).toFixed(0)+'K'}, grid:GRID, beginAtZero:true},
+        y:{ticks:TICK, grid:{color:'transparent'}}
+      },
+      plugins:{legend:{display:false}, tooltip:TOOLTIP}
+    })
+  });
+
+} // end initCharts
+
+/* ── Bootstrap: wait for Chart.js to load ── */
+if(typeof Chart !== 'undefined'){
+  initCharts();
+} else {
+  document.currentScript; // handled by onerror
+  window.addEventListener('load', function(){
+    if(typeof Chart === 'undefined') loadFallback();
+    initCharts();
+  });
+}
+</script>
+</body>
+</html>
