@@ -5,7 +5,10 @@
 [![SQL Analysis](https://img.shields.io/badge/Focus-Real%20Estate%20Analytics-2ea44f?style=for-the-badge&logo=google-sheets&logoColor=white)](#)
 [![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
-[![Interactive Dashboard](https://img.shields.io/badge/Live-Interactive%20Dashboard-6366f1?style=for-the-badge&logo=html5&logoColor=white)](index.html)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-6366f1?style=for-the-badge&logo=github&logoColor=white)](https://ganeshkumarkomarneni-2005.github.io/real-estate-sql-project/)
+
+> 🌐 **Live Interactive Dashboard**: **[https://ganeshkumarkomarneni-2005.github.io/real-estate-sql-project/](https://ganeshkumarkomarneni-2005.github.io/real-estate-sql-project/)**  
+> *Explore interactive KPI metrics, Chart.js visualizations, and executive market performance tables in real time.*
 
 ---
 
@@ -373,9 +376,12 @@ Generated from `06_phase6_executive_market_report.sql`, the following executive 
 
 ## 10. Interactive Analytics Dashboard
 
-In addition to SQL scripts, this repository provides a full **Single-Page Application (SPA) Executive Dashboard** in [`index.html`](index.html) (also preserved as `Real_Estate_Visual_Report.html`):
+In addition to SQL scripts, this repository provides a full **Single-Page Application (SPA) Executive Dashboard** deployed live at:
 
-- **Modern Glassmorphic Dark UI**: Custom-styled responsive layout designed for senior executives.
+👉 **[https://ganeshkumarkomarneni-2005.github.io/real-estate-sql-project/](https://ganeshkumarkomarneni-2005.github.io/real-estate-sql-project/)**
+
+- **Live Cloud Deployment**: Hosted via GitHub Pages directly from [`index.html`](index.html) (also mirrored as `Real_Estate_Visual_Report.html`).
+- **Modern Glassmorphic Dark UI**: Custom-styled responsive layout designed for senior executives and investment committees.
 - **Dynamic KPI Strip**: Real-time summary cards for total inventory, sales volume, median pricing, days on market, and income.
 - **18 Interactive Visualizations**: Rendered with [Chart.js 4.4](https://www.chartjs.org/), including bar charts, donut breakdowns, radar/multi-axis charts, and line graphs.
 - **Fail-Safe Offline Mode**: Features a pure HTML5 Canvas 2D fallback renderer that displays visualizations even when offline or disconnected from CDN assets.
