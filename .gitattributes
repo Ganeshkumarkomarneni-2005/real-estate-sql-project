@@ -1,0 +1,9 @@
+# Enable SQL in GitHub repository language breakdown
+*.sql linguist-detectable=true
+
+# Mark HTML dashboard files as documentation so SQL is recognized as the primary language
+*.html linguist-documentation=true
+*.html linguist-detectable=false
+
+# Ensure CSV datasets are treated as pure data
+*.csv linguist-detectable=false
