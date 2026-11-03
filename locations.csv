@@ -1,0 +1,8 @@
+location_id,location_name,city,state,postal_code,region_type,country
+1,Downtown Core,Austin,TX,78701,Downtown,United States
+2,Westlake Hills,Austin,TX,78746,Suburban,United States
+3,Uptown Arts District,Dallas,TX,75201,Uptown,United States
+4,Plano Tech Corridor,Dallas,TX,75024,Suburban,United States
+5,Houston Riverfront,Houston,TX,77002,Waterfront,United States
+6,The Woodlands,Houston,TX,77380,Suburban,United States
+7,Pearl District,San Antonio,TX,78215,Downtown,United States

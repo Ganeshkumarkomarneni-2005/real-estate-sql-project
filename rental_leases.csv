@@ -1,0 +1,19 @@
+lease_id,property_id,tenant_name,lease_start_date,lease_end_date,monthly_rent,security_deposit,lease_status
+1,2,Sophia Bennett,2022-01-01,2022-12-31,2400.00,2400.00,Expired
+2,2,Marcus Thorne,2023-01-01,2023-12-31,2550.00,2550.00,Active
+3,3,Apex Tech Solutions,2022-01-01,2023-12-31,12500.00,25000.00,Active
+4,5,Dr. Gregory House,2022-03-01,2023-02-28,7500.00,15000.00,Expired
+5,5,Harrison Sterling,2023-03-01,2024-02-28,8000.00,16000.00,Active
+6,8,Olivia Wilde,2022-06-01,2023-05-31,3800.00,3800.00,Expired
+7,8,Nathan Drake,2023-06-01,2024-05-31,4000.00,4000.00,Active
+8,11,Peter Parker,2022-01-01,2022-12-31,3200.00,3200.00,Expired
+9,11,Gwen Stacy,2023-01-01,2023-12-31,3400.00,3400.00,Active
+10,12,Bruce Wayne,2022-04-01,2023-03-31,2200.00,2200.00,Expired
+11,12,Selina Kyle,2023-04-01,2024-03-31,2350.00,2350.00,Active
+12,14,Bayou Logistics Inc,2022-01-01,2023-12-31,8500.00,17000.00,Active
+13,17,Viktor Vance,2022-01-01,2022-12-31,14000.00,28000.00,Expired
+14,17,Monroe Family,2023-01-01,2023-12-31,15000.00,30000.00,Active
+15,18,Rachel Green,2022-02-01,2023-01-31,3100.00,3100.00,Expired
+16,18,Ross Geller,2023-02-01,2024-01-31,3300.00,3300.00,Active
+17,5,Short Stay Tenant,2021-08-01,2021-11-30,7000.00,7000.00,Terminated
+18,2,Invalid Dates Tenant,2024-01-01,2023-01-01,2500.00,2500.00,Terminated

@@ -1,0 +1,31 @@
+property_id,location_id,property_type,address,bedrooms,bathrooms,area_sqft,year_built,purchase_price,purchase_date,current_status
+1,1,Apartment,300 Colorado St #1204,2,2.0,1150.00,2018,480000.00,2021-02-15,Sold
+2,1,Apartment,405 Colorado St #2201,1,1.5,820.00,2020,395000.00,2021-08-10,Rented
+3,1,Commercial,100 Congress Ave Ste 400,,4.0,4200.00,2015,2100000.00,2019-05-12,Rented
+4,2,Villa,1402 Westlake Dr,5,5.5,5400.00,2017,2850000.00,2020-01-20,Sold
+5,2,Independent House,89 Buckeye Trail,4,3.5,3600.00,2014,1650000.00,2020-06-18,Rented
+6,2,Villa,320 Las Lomas Dr,4,4.0,4800.00,2019,2400000.00,2021-11-05,Available
+7,3,Apartment,2300 McKinney Ave #8B,2,2.0,1280.00,2016,520000.00,2020-03-14,Sold
+8,3,Apartment,2800 Maple Ave #15A,3,2.5,1750.00,2019,690000.00,2021-07-22,Rented
+9,3,Commercial,2501 Cedar Springs Rd,,3.0,3100.00,2012,1450000.00,2019-10-30,Available
+10,4,Independent House,6401 Tennyson Pkwy,4,3.0,2900.00,2011,720000.00,2020-09-15,Sold
+11,4,Independent House,7200 Preston Rd,3,2.0,2100.00,2015,,,Rented
+12,4,Apartment,5800 Granite Pkwy #304,2,2.0,1050.00,2021,410000.00,2022-01-14,Rented
+13,5,Apartment,1100 Louisiana St #902,1,1.0,780.00,2017,285000.00,2021-04-18,Sold
+14,5,Commercial,800 Franklin St Ground Floor,,2.0,2600.00,2008,,,Rented
+15,5,Apartment,910 Travis St #1405,2,2.0,1220.00,2018,430000.00,2021-10-10,Available
+16,6,Independent House,24 Carlton Woods Dr,5,4.5,4600.00,2016,1550000.00,2019-12-04,Sold
+17,6,Villa,108 Grand Regency Cir,6,6.0,6200.00,2020,3200000.00,2021-03-25,Rented
+18,6,Independent House,45 Trace Creek Dr,3,2.5,2400.00,2013,560000.00,2020-07-19,Rented
+19,7,Apartment,303 Pearl Pkwy #401,2,2.0,1100.00,2018,380000.00,2021-05-30,Sold
+20,7,Independent House,210 River Ave,3,2.0,2200.00,2010,490000.00,2020-04-12,Sold
+21,1,Apartment,101 Bad Area Ln #1,2,1.0,-950.00,2020,350000.00,2022-02-01,Available
+22,3,Apartment,202 Zero Area Way #2,1,1.0,0.00,2021,290000.00,2022-03-01,Available
+23,2,Villa,303 Crazy Giant Estate,10,8.0,999999.00,2021,5000000.00,2022-04-01,Available
+24,4,Independent House,404 Negative Price Ct,3,2.0,1900.00,2015,-450000.00,2021-06-01,Available
+25,5,Apartment,505 Null Area St #5,2,2.0,,2019,410000.00,2022-05-01,Available
+26,7,Apartment,606 Long Unsold St #6,1,1.0,750.00,2016,270000.00,2020-01-10,Available
+27,2,Independent House,707 Stale Villa Blvd,4,3.5,3400.00,2014,1200000.00,2020-03-15,Available
+28,1,Apartment,808 Inverted Date Ave #1,2,2.0,1100.00,2019,450000.00,2021-01-10,Sold
+29,3,Apartment,909 Duplicate Blvd #9A,2,2.0,1250.00,2018,480000.00,2021-02-01,Available
+30,4,Commercial,1010 Missing Prop Ref Office,,2.0,2200.00,2017,950000.00,2021-04-01,Sold
